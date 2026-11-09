@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Shakti Support Portal</title>
+<style>
+body {
+font-family: Arial, sans-serif;
+background-color: #f4f4f9;
+display: flex;
+justify-content: center;
+align-items: center;
+height: 100vh;
+margin: 0;
+}
+.support-card {
+background: white;
+padding: 30px;
+border-radius: 10px;
+box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+width: 100%;
+max-width: 400px;
+text-align: center;
+}
+h2 {
+color: #333;
+margin-bottom: 20px;
+}
+input, textarea {
+width: 100%;
+padding: 12px;
+margin-bottom: 15px;
+border: 1px solid #ccc;
+border-radius: 5px;
+box-sizing: border-box;
+font-size: 14px;
+}
+button {
+background-color: #0088cc;
+color: white;
+border: none;
+padding: 12px;
+width: 100%;
+border-radius: 5px;
+font-size: 16px;
+cursor: pointer;
+}
+button:hover {
+background-color: #006699;
+}
+#status {
+margin-top: 15px;
+font-size: 14px;
+color: green;
+}
+</style>
+</head>
+<body>
+
+<div class="support-card">
+<h2>Shakti Support Center</h2>
+<form id="supportForm">
+<input type="text" id="name" placeholder="Aapka Naam" required>
+<textarea id="message" rows="4" placeholder="Apni samasya ya sandesh yahan likhein..." required></textarea>
+<button type="submit">Telegram par bhejein</button>
+</form>
+<p id="status"></p>
+</div>
+
+<script>
+document.getElementById('supportForm').addEventListener('submit', function(e) {
+e.preventDefault();
+
+const name = document.getElementById('name').value;
+const msg = document.getElementById('message').value;
+const token = '9061246652:AAED0w5XWs3b2rvknURhhAGGB0d6VEUI6MQ';
+const chatId = '6902806520'; // Yahan apni Telegram Chat ID dalein
+
+const fullMessage = `Naya Support Message:\nNaam: ${name}\nSandesh: ${msg}`;
+const statusText = document.getElementById('status');
+
+fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
+method: 'POST',
+headers: { 'Content-Type': 'application/json' },
+body: JSON.stringify({ chat_id: chatId, text: fullMessage })
+})
+.then(res => {
+if(res.ok) {
+statusText.innerText = 'Aapka message safaltapurvak Telegram par bhej diya gaya hai!';
+document.getElementById('supportForm').reset();
+} else {
+statusText.style.color = 'red';
+statusText.innerText = 'Kuch gadbad ho gayi, kripya dobara koshish karein.';
+}
+})
+.catch(err => {
+statusText.style.color = 'red';
+statusText.innerText = 'Network error: Message nahi bheja ja saka.';
+});
+});
+</script>
+
+</body>
+</html>
